@@ -8,18 +8,36 @@ const hasTracert = function() {
     return cachedHasTracertVar = !!window.Tracert
 };
 
-const getXpath = function(ele) {
-    // 逐级上查，找到有 id 属性的就停下
+const getAttr = function(node, key){
+    if(!node || !node.getAttribute){
+        return '';
+    }
+    return node.getAttribute(key);
+}
+
+const getXpathnSpm = function(ele) {
+    // 逐级上查，当有 id 的父级和 spmc+d 的父级都找到 或者 到 body 了就停下
     // 格式：body>div:eq(1):span:eq(2)   [id=id1]>span:eq(0)
     // 逐级向父级查找，推入元素栈内
     // 注意查找的是元素不是节点（比如空白节点，text 节点，不作数）
     // todo: 注意处理有多个拥有同一个 id 的情况，则不作数，接着向上找
     const parentEleStack = [];
+    let spm = {
+        c: '',
+        d: ''
+    };
     while(ele && ele.tagName.toLocaleLowerCase()!=='html'){
-        parentEleStack.push(ele);
-        if(ele.id){
+        if(parentEleStack._end && spm.c && spm.d){
             break;
         }
+        if(!parentEleStack._end){
+            parentEleStack.push(ele);
+        }
+        if(ele.id){
+            parentEleStack._end = true;
+        }
+        spm.c = spm.c || getAttr(ele, 'spm-c') || '';
+        spm.d = spm.d || getAttr(ele, 'spm-d') || '';
         ele = ele.parentElement;
     }
     
@@ -46,10 +64,13 @@ const getXpath = function(ele) {
         };
     }
 
-    return xpathArr.join('>');
+    return {
+        xpath: xpathArr.join('>'),
+        spm
+    };
 };
 
 export {
     hasTracert,
-    getXpath
+    getXpathnSpm
 };

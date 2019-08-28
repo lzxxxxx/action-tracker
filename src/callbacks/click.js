@@ -1,11 +1,13 @@
 import report from '../report';
-import { getXpath } from '../utils';
+import { getXpathnSpm } from '../utils';
 
 const cb = function(event){
     // 获取当前点击元素
     const ele = event.target;
     let options = Object.create(null);
-    options.xpath = getXpath(ele);
+    const {xpath, spm}  = getXpathnSpm(ele) || {};
+    options.xpath = xpath;
+    options.spm = spm;
     report(options);
 };
 

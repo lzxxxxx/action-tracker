@@ -2,6 +2,12 @@
 click:
 ```javascript
 {
-    xpath
+    xpath,
+    spm: {
+        a,
+        b,
+        c,
+        d
+    }
 }
 ```

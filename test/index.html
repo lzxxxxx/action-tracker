@@ -32,14 +32,24 @@
             heatmap_url: 'https://cdn.jsdelivr.net/npm/sa-sdk-javascript@1.14.7/heatmap.min.js',
             name: 'sensors',
             server_url: 'https://ebizdemo.datasink.sensorsdata.cn/sa?token=******',
-            heatmap:{}
+            heatmap:{
+                collect_element: function(){
+                    return true;
+                },
+                collect_input: function(){
+                    return true;
+                }
+            }
         });
         sensors.quick('autoTrack');
     </script>
 
 
     <div class="contain">
-        <a>link</a>
+        <div>link</div>
+        <label for="input1">title</label>
+        <input id="input1" type="text" style="border: 1px solid red">
+        
     </div>
     <div class="time" style="white-space: pre">
 
@@ -47,9 +57,17 @@
     <script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
     <!-- <script src="/bundle.js"></script> -->
     <script>
-    	document.addEventListener('DOMContentLoaded', function() {
-		    FastClick.attach(document.body);
-	    }, false);
+    	// document.addEventListener('DOMContentLoaded', function() {
+		//     FastClick.attach(document.body);
+        // }, false);
+        const label = document.querySelector('label');
+        const input = document.querySelector('input');
+        label.addEventListener('click', function(e){
+            console.log('====label',e.target);
+        });
+        input.addEventListener('click', function(e){
+            console.log('====input',e.target);
+        }, false);
     </script>
 </body>
 </html>
