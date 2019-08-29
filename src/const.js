@@ -3,7 +3,7 @@ const eventType = new Map([
     ['TOUCHEND', 'touchend']
 ]);
 
-const reportImgLinkPrefix = 'http://reportlzx.com';
+const reportImgLinkPrefix = 'http://reportlzx5.com';
 
 export {
     eventType,

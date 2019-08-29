@@ -11,6 +11,7 @@ const report = function (options = {}){
         return ;
     }
     const img = new Image();
+    options.stamp = +new Date();
     const src = JSON.stringify(options);
     const encodeSrc = encodeURIComponent(src);
     img.src = `${reportImgLinkPrefix}?options=${encodeSrc}`
