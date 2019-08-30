@@ -84,6 +84,17 @@ const throttle = function (fn, offset=0){
     }
 }
 
+const addevent = function(eventType, handler){
+    if(document.addEventListener){
+        return document.addEventListener(eventType, handler);
+    }
+    const oldhandler = document['on'+eventType];
+    document['on'+eventType] = function(e){
+        oldhandler.apply(document, e);
+        handler.apply(document, e);
+    };
+}
+
 
 // function throttle(fn, threshhold) {
 
