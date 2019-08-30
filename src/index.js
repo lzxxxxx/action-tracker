@@ -1,5 +1,7 @@
 import { eventType } from './const';
 import clickCb from './callbacks/click';
+import scrollCb from './callbacks/scroll';
+import proxyUtil from './proxy';
 
 /** 
  * 初始化（采样率控制，sdk 版本号控制，调用队列缓存）
@@ -33,8 +35,13 @@ function init() {
     // for(let type of types){
         // var clickCb = function(){alert(1);};
         // eval(`const ${type}_cb = `);
-
         d.addEventListener(eventType.get('CLICK'), clickCb);
+
+        // setInterval(function(){console.log(1);}, 200);
+        
+        d.addEventListener(eventType.get('SCROLL'), scrollCb);
+
+        proxyUtil.init();
 
         // 记录毫秒数
         // const timeDom = document.querySelector('.time');
