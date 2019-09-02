@@ -27,34 +27,45 @@ import proxyUtil from './proxy';
  * 全局都要注意错误的拦截，不能影响原有业务逻辑
  */
 
+ const ActionTracker = {
+    autoTrack: function(){
+        const d = window.document;
+        // const types = eventType.values();
+        // for(let type of types){
+            // var clickCb = function(){alert(1);};
+            // eval(`const ${type}_cb = `);
+            d.addEventListener(eventType.get('CLICK'), clickCb);
+    
+            // setInterval(function(){console.log(1);}, 200);
+            
+            d.addEventListener(eventType.get('SCROLL'), scrollCb);
+    
+            proxyUtil.init();
+    
+            // 记录毫秒数
+            // const timeDom = document.querySelector('.time');
+            // // let timestamp = null;
+            // d.addEventListener('click',()=>{
+            //     // timeDom.innerHTML = 'touchend';// 清空之前的展示
+            //     timeDom.append('click\n');
+            //     // 消除 touch move 的影响
+            // },false);
+            // d.addEventListener('resize', ()=>{
+            //     console.log('===resize');
+            // });
+    
+        // }
+    }
+ };
 
 
 function init() {
-    const d = window.document;
-    // const types = eventType.values();
-    // for(let type of types){
-        // var clickCb = function(){alert(1);};
-        // eval(`const ${type}_cb = `);
-        d.addEventListener(eventType.get('CLICK'), clickCb);
-
-        // setInterval(function(){console.log(1);}, 200);
-        
-        d.addEventListener(eventType.get('SCROLL'), scrollCb);
-
-        proxyUtil.init();
-
-        // 记录毫秒数
-        // const timeDom = document.querySelector('.time');
-        // // let timestamp = null;
-        // d.addEventListener('click',()=>{
-        //     // timeDom.innerHTML = 'touchend';// 清空之前的展示
-        //     timeDom.append('click\n');
-        //     // 消除 touch move 的影响
-        // },false);
-        // d.addEventListener('resize', ()=>{
-        //     console.log('===resize');
-        // });
-
-    // }
+    const n = window.__name__;
+    const q= window[n].__queue__;
+    window[n] = ActionTracker;
+    q.forEach(item => {
+        const {name, args} = item;
+        ActionTracker[name].call(null, args);
+    });
 }
 init();

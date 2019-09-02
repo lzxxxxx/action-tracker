@@ -11,3 +11,5 @@ const proxyUtil  = {
         };
     },
 };
+
+export default proxyUtil;

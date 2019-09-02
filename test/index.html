@@ -30,7 +30,6 @@
         })({
             sdk_url: 'https://cdn.jsdelivr.net/npm/sa-sdk-javascript@1.14.7/sensorsdata.min.js',
             heatmap_url: 'https://cdn.jsdelivr.net/npm/sa-sdk-javascript@1.14.7/heatmap.min.js',
-            name: 'sensors',
             server_url: 'https://ebizdemo.datasink.sensorsdata.cn/sa?token=******',
             heatmap:{
                 collect_element: function(){
@@ -41,7 +40,52 @@
                 }
             }
         });
-        sensors.quick('autoTrack'); -->
+        sensors.quick('autoTrack');
+    </script> -->
+
+    <script>
+    // 识别uid采样率控制；js异步加载；队列缓存调用；
+    try{
+        (function init(para){
+            para || (para = {})
+            var u = para.uid||'', n = para.name||'', l = para.sdkUrl||'', r = para.rate||0, s = 'script', w=window, d=document;
+            // uid 一共 16 位，12-15 是随机位
+            var _u = Math.min(u.slice(11, 15), 9999);
+            // 全局变量名注册到 __name__上 
+            w.__name__ = n;
+            w[n] = {};
+            w[n].__queue__ = [];
+            var funcs = ['autoTrack'];
+            for(var i=0;i<funcs.length;i++){
+                var fname = funcs[i];
+                w[n][fname] = function(args){
+                    // 注册到队列
+                    w[n].__queue__.push({
+                        name: fname,
+                        args: args
+                    });
+                }
+            }
+            // 如果不在采样率内，不处理
+            if(_u > r){
+                return;
+            }
+            // 引入 js bundle
+            var sDom = d.createElement(s);
+            sDom.async = 1;
+            sDom.src = l;
+            document.body.appendChild(sDom);
+        })({
+            sdkUrl: 'http://aaa.com/bundle.js',
+            name: 'accc',
+            uid: '1111111111345678',
+            rate: 5000
+        })
+        accc.autoTrack();
+    }
+    catch(e){
+        console.log('init error:', e);
+    }
     </script>
 
 
